@@ -1,0 +1,49 @@
+html{
+    font-size: 10px;
+}
+body{
+    font-size: 1.6rem;
+    color: #333;
+    line-height: 1.5;
+    font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+#main{
+    background: #eee;
+    margin: 30px 8px;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+header{
+    /*text-align: center;*/
+}
+h1{
+    font-size: 4rem;
+}
+figure{
+    background: #fff;
+}
+#img-caption{
+    line-height: 50px;
+}
+img{
+    display: block;
+    max-width: 100%;
+    margin: 25px auto;
+    height: auto;
+}
+ul,blockquote{
+    margin: 20px auto;
+    max-width: 550px;
+    text-align: left;
+}
+
+
+a{
+    color:#477ca7;
+}
+cite{
+    display: block;
+    text-align: right;
+}
+/*inline元素的知识点*/
