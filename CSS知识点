@@ -93,3 +93,6 @@ auto将列或行设置为其内容的宽度或高度
 子项grid-area的属性值对应容器area的命名来指定它在哪片区域;
 (4/2)方法2:grid容器上不划分区域，利用子项夹在哪几条水平、竖直的线间来控制它的位置:
 grid-area: horizontal line to start at / vertical line to start at / horizontal line to end at / vertical line to end at;
+29.transition :https://developer.mozilla.org/zh-CN/docs/Web/CSS/transition
+属性是 transition-property，transition-duration，transition-timing-function 和 transition-delay 的一个简写属性。
+过渡可以为一个元素在不同状态之间切换的时候定义不同的过渡效果。比如在不同的伪元素之间切换，像是 :hover，:active 或者通过 JavaScript 实现的状态变化。
