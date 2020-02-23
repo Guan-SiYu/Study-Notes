@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Portfolio</title>
+    <link rel="stylesheet" href="Personal Portfolio.css">
+</head>
+<body>
+<header>
+    <nav id="navbar">
+        <a href="#welcome-section">About</a>
+        <a href="#projects">Work</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+<section id="welcome-section">
+    <h1>Hey I am GuanSiyu</h1>
+    <p>a web developer</p>
+</section>
+<section id="projects">
+    <h2>These are some of my projects</h2>
+    <div class="grid-box">
+        <a href="" class="project">
+            <img src="1.jpg" alt="">
+            <p class="project-title project-tile">
+                <span class="code"><</span>
+                TributePage
+                <span class="code">/></span>
+            </p>
+        </a>
+        <a href="" class="project">
+            <img src="2.png" alt="">
+            <p class="project-title">
+                <span class="code"><</span>
+                Random Quote Machine
+                <span class="code">/></span>
+            </p>
+        </a>
+        <a href="" class="project">
+            <img src="4.png" alt="">
+            <p class="project-title">
+                <span class="code"><</span>
+                JavaScript Calculator
+                <span class="code">/></span>
+            </p>
+        </a>
+        <a href="" class="project">
+            <img src="3.jpg" alt="">
+            <p class="project-title">
+                <span class="code"><</span>
+                Map Data Across the Globe
+                <span class="code">/></span>
+            </p>
+        </a>
+        <a href="" class="project">
+            <img src="5.png" alt="">
+            <p class="project-title">
+                <span class="code"><</span>
+                Map Data Across the Globe
+                <span class="code">/></span>
+            </p>
+        </a>
+        <a href="" class="project">
+            <img src="6.png" alt="">
+            <p class="project-title">
+                <span class="code"><</span>
+                Wikipedia Viewer
+                <span class="code">/></span>
+            </p>
+        </a>
+    </div>
+    <a href="" id="button">Show all <div id="btn-decoration"> > </div>  </a>
+</section>
+<section id="contact">
+    <h2>Let's work together...</h2>
+    <p>How do you take your coffee?</p>
+    <div class="contact-links" >
+        <a href="" class="link">Facebook</a>
+        <a id="profile-link" href="https://github.com/Guan-SiYu" class="link" target="_blank">GitHub</a>
+        <a href="" class="link">Twitter</a>
+        <a href="" class="link">Call me</a>
+    </div>
+    <footer>
+        <p>**This is just a fake portfolio. All the projects and contact details given are not real. </p>
+        <p>&copy;Created for freeCodeCamp</p>
+    </footer>
+</section>
+<script>
+  //hover时proje-title样式
+    var blocks = document.querySelectorAll(".project");
+    var codes = document.querySelectorAll(".code");
+    for(var i in blocks){
+        var cur = blocks[i];
+        changeColor(cur,i)
+    }
+    function changeColor(cur,i) {
+        cur.onmouseover=function () {
+            codes[2*i].style.color="#F19927";
+            codes[2*i+1].style.color="#F19927";
+        }
+        cur.onmouseout=function () {
+            codes[2*i].style.color="#303841";
+            codes[2*i+1].style.color="#303841";
+        }
+    }
+    //hover时Show all button 样式
+    var btn = document.querySelector("#button");
+    var btnDecoration = document.querySelector("#btn-decoration");
+    btn.onmouseover = function () {
+        btnDecoration.removeAttribute("class");
+        btnDecoration.setAttribute("class","go");
+    }
+    btn.onmouseout=function () {
+        btnDecoration.removeAttribute("class");
+        btnDecoration.setAttribute("class","back");
+    }
+//    contact a标签hover时样式;
+    var links = document.querySelectorAll(".link");
+    for(var idx in links){
+        console.log(idx);
+        var cur = links[idx];
+        addAction(idx,cur);
+    }
+    function addAction(i,cur){
+        cur.onmouseover=function () {
+            console.log(this);
+            this.removeAttribute("class");
+            this.setAttribute("class","moveDown");
+        }
+        cur.onmouseout=function () {
+            this.removeAttribute("class");
+            this.setAttribute("class","moveUp");
+        }
+    }
+</script>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+
+</body>
+</html>

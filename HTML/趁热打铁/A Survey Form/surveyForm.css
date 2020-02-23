@@ -1,0 +1,50 @@
+html{
+    --colorWhite:#f3f3f3;
+    --color-green:#37af56;
+    --color-darkblue:#1b1b32;
+    --color-darkBlue-alpha:rgba(27,27,50,0.8);
+    --color-white:#f3f3f3;
+    --linear-left-color: rgba(154, 255, 235, 0.41);
+    --linear-right-color: rgba(91, 106, 255, 0.56);
+}
+body{
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 400;
+    font-family: 'Poppins','sans-serif';
+}
+body:before{
+    content: '';
+    background-image:   linear-gradient(to left,var(--linear-left-color) 0%,var(--linear-left-color) 50%,var(--linear-right-color) 50%,var(--linear-right-color) 100%),
+url("https://raw.githubusercontent.com/lasjorg/fcc-form-example-image/master/67103817-7c51e200-f18b-11e9-975f-f74561336a9a-lj.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;left:0;
+    z-index: -1;
+    /*线性梯度函数创建渐变图片*/
+    /*background-image: linear-gradient();*/
+}
+body:before,body:after{
+    box-sizing: border-box;
+}
+
+.container{
+    background: var(--color-darkBlue-alpha);
+    border-radius: 20px;
+    padding: 30px 40px;
+    max-width: 520px;
+    margin: 0 auto;
+    color: var(--color-white);
+}
+/*兄弟选择器'+'只选择后相邻的兄弟元素，也就是紧挨着的，是单个的，而‘~’选择器则表示某元素后所有同级的指定元素，强调所有的。*/
+label + input{
+    display: block;
+}
+
+label{
+    display: block;
+}
+
