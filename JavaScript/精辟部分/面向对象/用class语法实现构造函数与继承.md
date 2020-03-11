@@ -79,7 +79,7 @@ class Rectangle {
     constructor(height, width) {
         this.height = height;
         this.width = width;
-				this.sayHi = function(){ //🙋🏻‍sayHi方法不在原型链上 直接拷在实例的属性里
+				this.sayHi = function(){ //🙋🏻‍sayHi方法不在原型链上 直接拷在每一个实例里
             console.log("Hi");
         }
     }
