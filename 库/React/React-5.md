@@ -42,3 +42,73 @@ class Navbar extends React.Component {
 
 ```
 
+
+
+## 将回调函数作为props传递
+
+可以将“state”作为“props”传递给子组件，但仅不限于传递数据。
+
+将a“dsha”作为B传递
+可以将“state”作为“props”传递给子组件，但不限于传递数据。还可以将“handler函数”或在React组件上定义的任何方法传递给子组件。这是允许子组件与其父组件交互的方式。你把方法像普通的'/prop'一样传递给子组件。它被分配了一个名称，您可以在子组件的this.props下访问该方法名称。
+
+代码编辑器中概述了三个组件。MyApp组件是将呈现GetInput和RenderInput子组件的父组件。将GetInput组件添加到MyApp中的render方法，然后将一个名为input的属性传递给MyApp状态下的inputValue。还要创建一个名为handleChange的属性，并将输入处理程序handleChange传递给它。
+
+ 接下来，向MyApp中的render方法添加“/render input/”，然后创建一个名为input的“/prop/”并将inputValue从state传递给它。完成后，您将能够在GetInput组件中键入输入字段，然后通过props调用其父级中的handler方法。这将更新父级状态下的输入，该输入将作为道具传递给两个子级。
+
+```js
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({
+      inputValue: event.target.value
+    });
+  }
+  render() {
+    return (
+       <div>
+        <GetInput input={this.state.inputValue} handleChange={this.handleChange}/>
+
+        <RenderInput input={this.state.inputValue}/>
+       </div>
+    );
+  }
+};
+
+class GetInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h3>Get Input:</h3>
+        <input
+          value={this.props.input}
+          onChange={this.props.handleChange}/>
+      </div>
+    );
+  }
+};
+
+class RenderInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h3>Input Render:</h3>
+        <p>{this.props.input}</p>
+      </div>
+    );
+  }
+};
+
+```
+
