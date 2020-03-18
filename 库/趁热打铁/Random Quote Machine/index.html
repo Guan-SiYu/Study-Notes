@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+        body{
+            margin: 0;
+        }
+        .container{
+            position: absolute;
+            width:80vw;
+            height:100vh;
+                top:0;
+            right:0
+        }
+
+        #quote-box{
+            background: #ffffff;
+            position: absolute;
+            top:0;left:0;bottom:0;right:0; margin:auto;
+            padding:50px;
+            width: 50%;
+            height: 45%
+        }
+        #author{
+            text-align: right;
+        }
+        .btn-group{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        #tweet-quote{
+            text-decoration: none;
+            color: white;
+            font-weight: 300;
+            background: goldenrod;
+            border-radius: 10px;
+            float: left;
+            padding: 0px;
+            padding-top: 8px;
+            text-align: center;
+            font-size: 1.2em;
+
+            height: 30px;
+            width: 40px;
+        }
+        #new-quote{
+            height: 38px;
+            border: none;
+            border-radius: 3px;
+            color: #fff;
+            outline: none;
+            font-size: 0.85em;
+            padding: 8px 18px 6px 18px;
+            opacity: 1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="allbox"></div>
+
+    <script type="text/babel">
+        //stylesheet
+        const containerStyle = {
+
+        }
+        //data initial
+        const List = [
+            {
+                text:"I attribute my success to this: I never gave or took any excuse.",
+                author:"Florence Nightingale",
+                color:"green"
+            },
+            {
+                text: "In order to succeed, your desire for success should be greater than your fear of failure.",
+                author: "Bill Cosby",
+                color: "rgb(155, 89, 182)"
+            },
+            {
+                text:"Everything you’ve ever wanted is on the other side of fear.",
+                author:"George Addair",
+                color:"rgb(189, 187, 153)"
+            },
+            {
+                text:"When I let go of what I am, I become what I might be.",
+                author:"Lao Tzu",
+                color:"rgb(44, 62, 80)"
+            },
+            {
+                text:"Life isn’t about getting and having, it’s about giving and being.",
+                author:"Kevin Kruse",
+                color:"rgb(115, 168, 87)"
+            },
+            {
+                text:"Change your thoughts and you change your world.",
+                author:"Norman Vincent Peale",
+                color:"rgb(231, 76, 60)"
+            }
+        ]
+        const ListLength = List.length;
+
+        class QuoteBox extends React.Component{ //父组件 quote-box
+            constructor(props){
+                super(props);
+                this.state = {
+                    list:List,
+                    idx:0
+                };
+                this.changeTabData = this.changeTabData.bind(this);
+            }
+            changeTabData(){
+                let randomIdx = Math.floor(Math.random()*ListLength);  // idx~[0,ListLength)
+                if(randomIdx==this.state.idx){
+                    randomIdx = Math.floor(Math.random()*ListLength);
+                    console.log("换了")
+                    console.log()
+                }
+                this.setState({
+                    idx:randomIdx
+                })
+            }
+            //生命周期函数
+            componentWillMount(){   //页面初次加载时随便显示一个索引值
+                this.setState({
+                    idx: Math.floor(Math.random()*ListLength)
+                })
+            }
+            shouldComponentUpdate(nextProps, nextState){
+                console.log("nextIdx = "+nextState.idx+" , "+"curIdx = "+this.state.idx);
+
+               return nextState.idx == this.state.idx ? false :true;
+            }
+            componentDidUpdate() {
+                console.log('Component re-rendered.');
+                console.log();
+            }
+            render(){
+                return (
+                    <div className="container" style = {{background:this.state.list[this.state.idx].color}} >
+                        <div id="quote-box" style={{color:this.state.list[this.state.idx].color}}>
+                            <Text text = {this.state.list[this.state.idx].text}/>
+                            <Author author = {this.state.list[this.state.idx].author}/>
+                            <div className="btn-group">
+                                <a href="twitter.com/intent/tweet"
+                                   id="tweet-quote"
+                                   style = {{background:this.state.list[this.state.idx].color}}
+                                >T</a>
+                                <button id="new-quote"
+                                        onClick={this.changeTabData}
+                                        style = {{background:this.state.list[this.state.idx].color}}
+                                >new quote</button>
+                            </div>
+                        </div>
+                    </div>
+
+                )
+            }
+
+        }
+        class Text extends React.Component{ //子组件 text
+            constructor(props){
+                super(props)
+            }
+            render(){
+                return <h1 id="text">{this.props.text }</h1>
+            }
+        }
+        class Author extends React.Component{ //子组件 Author
+            constructor(props){
+                super(props)
+            }
+            render(){
+                return <p id="author">--{this.props.author}</p>
+            }
+        }
+
+        //render react to dom
+        ReactDOM.render(<QuoteBox/>,document.querySelector(".allbox"));
+    </script>
+
+</body>
+</html>
