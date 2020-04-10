@@ -1,0 +1,169 @@
+## 魔术常量
+
+PHP 向它运行的任何脚本提供了大量的预定义常量。
+
+不过很多常量都是由不同的扩展库定义的，只有在加载了这些扩展库时才会出现，或者动态加载后，或者在编译时已经包括进去了。
+
+有八个魔术常量它们的值随着它们在代码中的位置改变而改变。
+
+例如 __LINE__ 的值就依赖于它在脚本中所处的行来决定。这些特殊的常量不区分大小写
+
+```php
+namespace MyProject;
+//__NAMESPACE__ 当前命名空间的名称
+echo '命名空间为："', __NAMESPACE__, '"'; // 输出 "MyProject"
+
+//__LINE__ 文件中的当前行号
+echo '这是第 " '  . __LINE__ . ' " 行 <br/>';
+
+//__FILE__ 文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名
+echo '该文件位于 " '  . __FILE__ . '<br/>';
+
+//__DIR__ 文件所在的目录。如果用在被包括文件中，则返回被包括的文件所在的目录
+echo '该文件位于 " '  . __DIR__ . '<br/>';
+
+//__FUNCTION__ 函数名称
+function fun1() {
+    echo  '这个函数名为：' . __FUNCTION__ . '<br/>';
+}
+fun1();
+
+//__CLASS__ 类的名称
+//__METHOD__ 类的方法名
+class Constructor {
+    function method1() {
+        echo '类名为：'  . __CLASS__ . "<br>";
+        echo  '方法名为：' . __FUNCTION__ . "<br>";
+        echo  '方法名为：' . __METHOD__ . "<br>";
+
+    }
+}
+$example = new Constructor();
+$example->method1();
+```
+
+命名空间为："MyProject"这是第 " 7 " 行 
+该文件位于 " /Users/mac/Desktop/PHP/HelloWorld.php
+该文件位于 " /Users/mac/Desktop/PHP
+这个函数名为：MyProject\fun1
+类名为：MyProject\Constructor
+方法名为：method1
+方法名为：MyProject\Constructor::method1
+
+## 超级全局变量
+
+超级全局变量在PHP 4.1.0之后被启用, 是PHP系统中自带的变量，在一个脚本的全部作用域中都可用。
+
+不需要特别说明，就可以在函数及类中使用。
+
+PHP 超级全局变量列表:
+
+`$GLOBALS`	`$_SERVER`	`$_REQUEST`    `$_POST`	`$_GET`	`$_FILES`	`$_ENV`	`$_COOKIE`	`$_SESSION`
+
+####  $GLOBALS
+
+$GLOBALS 是PHP的一个超级全局变量组，在一个PHP脚本的全部作用域中都可以访问。
+
+$GLOBALS 是一个包含了全部变量的全局组合数组。变量的名字就是数组的键。
+
+以下实例介绍了如何使用超级全局变量 $GLOBALS:
+
+```php
+$x = 75; 
+$y = 25;
+
+function addition() 
+{ 
+    $GLOBALS['z'] = $GLOBALS['x'] + $GLOBALS['y']; 
+}
+ 
+addition(); 
+echo $z; 
+```
+
+以上实例中 z 是一个$GLOBALS数组中的超级全局变量，该变量同样可以在函数外访问。
+
+#### $_SERVER
+
+$_SERVER 是一个包含了诸如头信息(header)、路径(path)、以及脚本位置(script locations)等等信息的数组。这个数组中的项目由 Web 服务器创建。不能保证每个服务器都提供全部项目；服务器可能会忽略一些，或者提供一些没有在这里列举出来的项目。
+
+```php
+echo $_SERVER['PHP_SELF'];
+echo "<br>";
+echo $_SERVER['SERVER_NAME'];
+echo "<br>";
+echo $_SERVER['HTTP_HOST'];
+echo "<br>";
+echo $_SERVER['HTTP_REFERER'];
+echo "<br>";
+echo $_SERVER['HTTP_USER_AGENT'];
+echo "<br>";
+echo $_SERVER['SCRIPT_NAME'];
+```
+
+https://www.runoob.com/php/php-superglobals.html
+
+#### $_REQUEST
+
+PHP $_REQUEST 用于收集HTML表单提交的数据。
+
+以下实例显示了一个输入字段（input）及提交按钮(submit)的表单(form)。 当用户通过点击 "Submit" 按钮提交表单数据时, 表单数据将发送至<form>标签中 action 属性中指定的脚本文件。 在这个实例中，我们指定文件来处理表单数据。如果你希望其他的PHP文件来处理该数据，你可以修改该指定的脚本文件名。 然后，我们可以使用超级全局变量 $_REQUEST 来收集表单中的 input 字段数据:
+
+```php+HTML
+<html>
+<body>
+ 
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+Name: <input type="text" name="fname">
+<input type="submit">
+</form>
+ 
+<?php 
+$name = $_REQUEST['fname']; 
+echo $name; 
+?>
+ 
+</body>
+</html>
+```
+
+####  $_POST
+
+PHP $_POST 被广泛应用于收集表单数据，在HTML form标签的指定该属性："method="post"。
+
+```php+HTML
+<html>
+<body>
+ 
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+Name: <input type="text" name="fname">
+<input type="submit">
+</form>
+ 
+<?php 
+$name = $_POST['fname']; 
+echo $name; 
+?>
+ 
+</body>
+</html>
+```
+
+####  $_GET
+
+$_GET 也可以收集URL中发送的数据。
+
+当用户点击链接, 参数 `firstName` 和 `lastName` 将发送至`test.php`
+
+```html
+<!--index.html-->
+<a href="test.php?firstName=Guan&lastName=siyu">Test $GET</a>
+```
+
+```php
+//test.php
+$fname = $_GET['firstName'];
+$lname = $_GET['lastName'];
+echo $fname,' ',$lname;//Guan siyu
+```
+
