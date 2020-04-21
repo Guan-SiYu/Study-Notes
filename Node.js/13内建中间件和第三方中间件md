@@ -1,0 +1,81 @@
+## Express内建中间件
+
+#### urlencoded
+
+与 `json()` 中间件相似的另一个中间件是 `urlencoded()` ，这个函数的作用是读取以urlencoded格式传递的请求体数据，并设置给 `req.body` 属性。urlencode格式就是是 key=value 的键值对格式，这是一种传统的格式现今不太常用了，基本上如果是一个HTML表单，里面的输入域需要在服务器创建信息，它的请求体就是 key=value&key-value 这样的 。
+
+```
+app.use(expressFunc.urlencoded());
+```
+
+在postman测试上面这行代码需要将 `Body栏` 选为 `x-www-form-urlencoded`，这样我们就可以在请求体中添加键值对，它们发送给服务器时会被连在一起。
+
+控制台会看到一个警告
+
+```bash
+body-parser deprecated undefined extended: provide extended option
+body格式器弃用未定义的扩展选项：请提供扩展选项
+```
+
+这个警告告诉我们应该给 urlencoded() 传入一个对象，并将这个对象的 `extended` 属性设为true，这样我们就可以用unlencoded格式 传递数组或更复杂的表单数据。
+
+```js
+app.use(expressFunc.urlencoded({extended:true}));
+```
+
+#### static
+
+内建static中间件用来向外提供静态内容，参数需要传入一个静态内容的文件夹，在这里我们传入📂public文件夹，我们可以将所有静态资源比如css、图片等放入public文件夹中。
+
+```js
+app.use(expressFunc.static('public'));
+```
+
+浏览器访问 http://localhost:3000/readme.txt 会显示文件内容   ‼️注意访问路径并不包含public目录，static方法是从根目录开始起作用的
+
+
+
+## 第三方中间件
+
+这节课我们来介绍一些Express的第三方中间件
+
+#### helmet中间件
+
+helmet中间件可以帮助你通过设置http头部来加强安全性。
+
+```bash
+express-demo$ npm i helmet
+```
+
+```js
+app.use(helmet());
+```
+
+#### Morgan中间件
+
+使用Morgan来进行HTTP请求的日志记录
+
+```bash
+express-demo$ npm i morgan
+```
+
+需需提供字符串参数format，可以查阅官方文档找到最合适你的记录方式，这里使用最简单的tiny格式
+
+```js
+app.use(morgan('tiny'))
+```
+
+有了morgan，每次服务器收到的HTTP请求都会被日志记录📝
+
+morgan默认请求是在控制台记录日志：
+
+```bash
+GET /api/courses 200 151 - 5.227 ms
+GET /api/courses/2 200 24 - 0.683 ms
+POST /api/courses 200 27 - 2.640 ms
+PUT /api/courses/3 200 30 - 0.563 ms
+DELETE /api/courses/2 200 24 - 0.541 ms
+```
+
+但你也可以设置将日志写在日志文件中，如果你打开这个功能对你的运行效率就会有影响，你可能不会在生产环境使用这个功能，或者你只会在特定场合才开启这个功能，你可以有一个配置文件，在生产环境中的某些特定场景下，短时间开启这个功能然后就关闭，下节课我们来看看如何在开发、测试、生产等不同环境下工作。
+
