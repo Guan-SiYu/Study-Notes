@@ -1,0 +1,76 @@
+Promise 的使用写起来可以更简单。ES6新特性 Aysnc/Await 可以让你像写同步代码一样写异步代码
+
+重写之前例子中promise实现部分
+
+```js
+/* await.js */
+function getUser(userID) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('setTimeout--A')
+            resolve({id: userID, GitHubName: 'mosh', birth: '1999'})
+        }, 3000)
+    })
+}
+
+function getRepoArr(username) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('setTimeout--B')
+            resolve(["repo1","repo2","repo3"])
+        }, 3000)
+    })
+}
+
+function getContent(repoArr) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('setTimeout--C',repoArr)
+            resolve("仓库的内容是...'")
+        }, 3000);
+    })
+}
+```
+
+每次只要函数返回promise对象，你就可以await它，就可以像同步编程一样把获取结果赋值给一个变量或常量。
+
+J**avaScript的引擎要求只有在一个async修饰的函数中才能使用await**。也就是说，当你在一个函数中使用await操作符时，要用async操作符修饰这个函数
+
+```js
+async function displayContent() {
+    const user = await getUser(1);
+    const reposArr = await getRepoArr(user);
+    const content = await getContent(reposArr);
+    console.log(content);
+}
+```
+
+```
+setTimeout--A
+setTimeout--B
+setTimeout--C [ 'repo1', 'repo2', 'repo3' ]
+仓库的内容是...'
+```
+
+`displayContent()` 返回一个promise对象 ，这说明async/await构建在Promise的逻辑之上，async/await是为了让我们像写同步代码一样的皮肤战术。在内部，当js引擎执行代码时，它会将这些代码转换为then()那样连起来。所以就算我们的代码写的像同步，也不是同步，它还是异步。当我们的await
+
+### try-catch
+
+使用async/await 没有catch方法，获取异常的方法变为 `try-catch` 块
+
+将所有异步操作包在try块中，翻译为：我们尝试去执行try块的这些代码， 如果有异常，catch块的代码块就执行
+
+```js
+async function displayContent() {
+    try {
+        const user = await getUser(1);
+        const reposArr = await getRepoArr(user);
+        const content = await getContent(reposArr);
+        console.log(content);
+    }
+    catch (err) {//传入error对象
+        console.log("Error",err);
+    }
+}
+```
+
