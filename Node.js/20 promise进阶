@@ -1,0 +1,99 @@
+##  Promise.all()   并行promise
+
+有时你可能想并行的处理几个异步请求，当他们全部结束时再做点什么。比如你可能同时请求FaceBook和Twitter的API，当所有的请求都完毕的时候再返回给客户端，我们来模拟一下：
+
+`Promise.all()` 是Promise类的另一个静态方法，需传入的参数是promise实例对象数组，返回一个新的promise对象，这个新promise的履行取决于所有包含参数数组里的所有promise对象全部履行。
+
+```js
+const p1 = new Promise(resolve => {
+    setTimeout(()=>{
+        console.log(1);
+        resolve('FaceBook');
+    },4000)
+})
+const p2 = new Promise(resolve => {
+    setTimeout(()=>{
+        console.log(2);
+        resolve('Twiter');
+    },8000)
+})
+Promise.all([p1,p2]).then(result=>console.log(result));
+```
+
+```bash
+$ node promise-api.js
+# 数4s
+1
+# 数4s
+2
+[ 'FaceBook', 'Twiter' ]
+```
+
+
+
+等待两秒p1和p2几乎同时完成，得到了两个结果组成的数组。这里需要澄清的事情：首先这里没有真实的并发操作，这里不是多线程，仍然是单线程，这个单线程几乎适合同时进行两个异步操作的，但不真的是同时的，首先它开始了p1的异步操作，线程就立即释放了，然后它马上进行第二个操作，它没有等待第一个的操作结果，就是为了马上进行第二个操作，（我们之前看到的例子是这样的：先得到user对象然后得到仓库数组，然后得到仓库内容，每个异步操作都在上一个异步操作完成后才开始。而这里的异步操作几乎是同时进行的，这就是区别。）
+
+
+
+当我们得到一个结果，这个结果就会存到数组中，在这个例子中每个promise都被resolve了，但是如果其中一个promise失败了呢？修改p1的参数加一个reject
+
+```js
+const p1 = new Promise((resolve, reject) => {
+    setTimeout(()=>{
+        console.log(1);
+        reject(new Error('FaceBook:Error,something wrong'));
+    },2000)
+})
+const p2 = new Promise(resolve => {
+    setTimeout(()=>{
+        console.log(2);
+        resolve('Twiter');
+    },4000)
+})
+Promise.all([p1,p2])
+    .then(result=>console.log(result))
+    .catch(err=>console.log(err.message));
+```
+
+```bash
+1
+FaceBook:Error,something wrong
+#2s
+2
+
+```
+
+只要其中一个promise出错了，全部promise的最终返回值就被拒绝了。
+
+
+
+##  Promise.race() 
+
+有时你想同时进行几个异步操作，但是只要其中有promise实现了就立即进行某些操作，你不想等到所有promise都履行完毕 ，第一个promise异步完成就立即进行操作。
+
+```js
+const p1 = new Promise((resolve) => {
+    setTimeout(()=>{
+        console.log(1);
+        resolve('FaceBook');
+    },5000)
+})
+const p2 = new Promise(resolve => {
+    setTimeout(()=>{
+        console.log(2);
+        resolve('Twiter');
+    },2000)
+})
+Promise.race([p1,p2])
+    .then(result=>console.log(result))
+    .catch(err=>console.log(err.message));
+```
+
+```bash
+2
+Twiter
+1
+
+```
+
+promise只返回了第一个完成的结果，而不是一个结果数组。
